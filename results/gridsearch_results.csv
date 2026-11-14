@@ -1,0 +1,4 @@
+model,n_candidates,best_cv_f1,test_accuracy,test_precision,test_recall,test_f1,test_roc_auc,best_params,sec
+RandomForest,72,0.7939,0.7877,0.7541,0.6667,0.7077,0.8456,"{'clf__max_depth': 8, 'clf__min_samples_leaf': 1, 'fs__max_features': 8, 'pre__num__imp__strategy': 'median'}",90.7
+XGBoost,96,0.779,0.8101,0.7612,0.7391,0.75,0.8322,"{'clf__learning_rate': 0.1, 'clf__max_depth': 4, 'clf__n_estimators': 200, 'fs__max_features': 10, 'pre__num__imp__strategy': 'mean'}",69.8
+LogReg,48,0.7697,0.8156,0.7812,0.7246,0.7519,0.861,"{'clf__C': 1, 'fs__max_features': 15, 'pre__num__imp__strategy': 'mean'}",30.8

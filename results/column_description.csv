@@ -1,0 +1,13 @@
+column,description,type,dtype,n_missing,n_unique,used
+PassengerId,승객 ID (식별자),ID,int64,0,891,X (식별자)
+Survived,생존 여부 (타겟),Target,int64,0,2,Target
+Pclass,객실 등급 (1/2/3),Numeric(ordinal),int64,0,3,O
+Name,이름 (호칭 포함),Text,str,0,891,Title 추출
+Sex,성별,Categorical,str,0,2,O
+Age,나이,Numeric,float64,177,88,O
+SibSp,동승한 형제·배우자 수,Numeric,int64,0,7,O
+Parch,동승한 부모·자녀 수,Numeric,int64,0,7,O
+Ticket,티켓 번호,Text,str,0,681,X (고유값 과다)
+Fare,운임,Numeric,float64,0,248,O
+Cabin,객실 번호,Text/Categorical,str,687,147,HasCabin 추출
+Embarked,승선 항구 (C/Q/S),Categorical,str,2,3,O

@@ -1,0 +1,11 @@
+,mean_abs_shap
+Title_Mr,1.0618
+FarePerPerson,0.6608
+Age,0.5459
+Sex_female,0.5337
+Fare,0.5136
+Pclass,0.3552
+HasCabin,0.3254
+FamilySize,0.1789
+Title_Miss,0.1372
+Sex_male,0.0318
