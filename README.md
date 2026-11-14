@@ -14,7 +14,7 @@ jupyter nbconvert --to notebook --execute --inplace 01_eda.ipynb
 jupyter nbconvert --to notebook --execute --inplace 02_experiments.ipynb
 ```
 - 모든 난수는 `RANDOM_STATE = 42`로 고정 (분할, CV, 모델, permutation importance)
-- 2코어 CPU 기준 02 노트북 실행 시간 약 10분 (GridSearchCV 포함)
+- 2코어 CPU 기준 02 노트북 실행 시간 약 5분 (GridSearchCV 포함)
 
 ## 데이터
 - `data/train.csv` : Kaggle *Titanic - Machine Learning from Disaster* 의 `train.csv` (891행 × 12열)
