@@ -12,9 +12,10 @@ pip install -r requirements.txt        # Python 3.10+ (실험 환경: Python 3.1
 cd notebooks
 jupyter nbconvert --to notebook --execute --inplace 01_eda.ipynb
 jupyter nbconvert --to notebook --execute --inplace 02_experiments.ipynb
+jupyter nbconvert --to notebook --execute --inplace 03_automl.ipynb
 ```
 - 모든 난수는 `RANDOM_STATE = 42`로 고정 (분할, CV, 모델, permutation importance)
-- 2코어 CPU 기준 02 노트북 실행 시간 약 5분 (GridSearchCV 포함)
+- 2코어 CPU 기준 실행 시간: 02 노트북 약 5분 (GridSearchCV 포함), 03 노트북 약 1분
 
 ## 데이터
 - `data/train.csv` : Kaggle *Titanic - Machine Learning from Disaster* 의 `train.csv` (891행 × 12열)
@@ -27,10 +28,12 @@ jupyter nbconvert --to notebook --execute --inplace 02_experiments.ipynb
 ├── src/fe_pipeline.py          # 파생 변수 생성 + 파이프라인 조립 함수 + 모델 정의
 ├── notebooks/
 │   ├── 01_eda.ipynb            # STEP 01~02: 데이터 구조, 결측치, 이상치, 분포, 상관관계, 타겟 분포
-│   └── 02_experiments.ipynb    # STEP 03~05: 특성 공학 비교, 변수 선택, 모델 비교, GridSearchCV, SHAP
+│   ├── 02_experiments.ipynb    # STEP 03~05: 특성 공학 비교, 변수 선택, 모델 비교, GridSearchCV, SHAP
+│   └── 03_automl.ipynb         # 가산점: AutoML(FLAML) vs 수동 파이프라인 비교
 ├── results/
 │   ├── main_comparison.csv     # 필수 실험표 (Base / Exp-1 / Exp-2 / Exp-3 × 4 모델)
 │   ├── all_results.csv         # 모든 실험(ablation 포함)의 CV 지표 5종 + 과적합 gap
+│   ├── automl_comparison.csv   # AutoML(원본 입력 / 파생 변수 입력) vs 수동 파이프라인 · GridSearchCV
 │   ├── gridsearch_results.csv, fs_k_curve.csv, rf_feature_importance.csv, shap_importance.csv
 │   └── figures/                # 보고서에 사용한 모든 그림
 └── report/report.pdf           # 제출 보고서
@@ -46,3 +49,5 @@ jupyter nbconvert --to notebook --execute --inplace 02_experiments.ipynb
 
 추가로 한 번에 한 요소만 바꾸는 ablation(결측치 4종, 인코딩 2종, 스케일링 4종, 파생 변수 유무, 변수 선택 유무)을 수행했다.
 파생 변수: FamilySize, IsAlone, FarePerPerson, HasCabin, Title, AgeGroup
+
+가산점 항목: Pipeline 객체, GridSearchCV, SHAP, Feature Importance 시각화 고도화(MDI vs Permutation), AutoML(FLAML) 비교 실험 — 5개 모두 수행

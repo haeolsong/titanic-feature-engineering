@@ -1,0 +1,8 @@
+method,n_input_cols,best_estimator,cv_f1,n_trials,sec,test_accuracy,test_precision,test_recall,test_f1,test_roc_auc
+AutoML-Raw,7,lgbm,0.7741,300,19.8,0.7765,0.7377,0.6522,0.6923,0.8134
+AutoML-FE,13,lgbm,0.7875,300,17.8,0.7989,0.7619,0.6957,0.7273,0.8491
+Manual Exp-3 + XGBoost,14,XGBoost,0.7794,1,,0.7989,,,0.7353,0.8305
+Manual Exp-1 + LogReg,14,LogReg,0.7639,1,,0.8324,,,0.7761,0.8731
+GridSearchCV RandomForest,14,RandomForest,0.7939,72,90.7,0.7877,0.7541,0.6667,0.7077,0.8456
+GridSearchCV XGBoost,14,XGBoost,0.779,96,69.8,0.8101,0.7612,0.7391,0.75,0.8322
+GridSearchCV LogReg,14,LogReg,0.7697,48,30.8,0.8156,0.7812,0.7246,0.7519,0.861
