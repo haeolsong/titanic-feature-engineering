@@ -21,6 +21,9 @@ jupyter nbconvert --to notebook --execute --inplace 03_automl.ipynb
 - `data/train.csv` : Kaggle *Titanic - Machine Learning from Disaster* 의 `train.csv` (891행 × 12열)
   - 원본: https://www.kaggle.com/competitions/titanic/data
   - Kaggle `test.csv`는 정답이 없어 사용하지 않고, `train.csv`를 Stratified 80:20(712/179)으로 분할
+  - 무결성 확인: SHA-256 `4a437fde05fe5264e1701a7387ac6fb75393772ba38bb2c9c566405af5af4bd7`
+    (Kaggle Titanic train.csv를 그대로 보관한 공개 저장소 agconti/kaggle-titanic의 `data/train.csv`와 바이트 단위로 동일)
+  - 확인 명령: `shasum -a 256 data/train.csv` (macOS) / `sha256sum data/train.csv` (Linux)
 
 ## 폴더 구조
 ```
@@ -42,12 +45,13 @@ jupyter nbconvert --to notebook --execute --inplace 03_automl.ipynb
 ## 실험 구성
 | 실험 | 결측치 처리 | 인코딩 | 스케일링 | Feature Selection |
 |---|---|---|---|---|
-| Base | 없음 | 없음 | 없음 | 없음 (결측 없는 원본 수치형 4개 컬럼만 사용) |
+| Base-Raw | 없음 | 없음 | 없음 | 없음 (원본 7개 컬럼을 결측·문자열 그대로 입력 — XGBoost/LightGBM만 학습 가능) |
+| Base-Num | 없음 | 없음 | 없음 | 없음 (4개 모델 비교용: 결측 없는 원본 수치형 4개 컬럼만 사용) |
 | Exp-1 | Mean | One-Hot | Standard | X |
 | Exp-2 | Median | Label(Ordinal) | MinMax | O (RF 중요도 상위 10개) |
 | Exp-3 | Most Frequent | One-Hot | Robust | O (RF 중요도 상위 10개) |
 
-추가로 한 번에 한 요소만 바꾸는 ablation(결측치 4종, 인코딩 2종, 스케일링 4종, 파생 변수 유무, 변수 선택 유무)을 수행했다.
+추가로 한 번에 한 요소만 바꾸는 ablation(결측치 4종, 인코딩 3종(One-Hot/Label/Target), 스케일링 4종, 파생 변수 유무, 변수 선택 유무)을 수행했다.
 파생 변수: FamilySize, IsAlone, FarePerPerson, HasCabin, Title, AgeGroup
 
 가산점 항목: Pipeline 객체, GridSearchCV, SHAP, Feature Importance 시각화 고도화(MDI vs Permutation), AutoML(FLAML) 비교 실험 — 5개 모두 수행

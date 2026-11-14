@@ -13,7 +13,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import (OneHotEncoder, OrdinalEncoder, StandardScaler,
-                                   MinMaxScaler, RobustScaler, FunctionTransformer)
+                                   MinMaxScaler, RobustScaler, FunctionTransformer, TargetEncoder)
 from sklearn.feature_selection import SelectFromModel
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -69,6 +69,8 @@ def _encoder(kind):
         return OneHotEncoder(handle_unknown="ignore", sparse_output=False)
     if kind == "label":   # 입력 변수용 Label Encoding = OrdinalEncoder (LabelEncoder는 타겟 전용)
         return OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)
+    if kind == "target":  # 범주별 생존율(평활화)로 치환. fit 시 내부 5-fold cross-fitting으로 타겟 누수 방지
+        return TargetEncoder(target_type="binary", random_state=RANDOM_STATE)
     raise ValueError(kind)
 
 
@@ -90,6 +92,25 @@ def get_model(name):
 MODEL_NAMES = ["LogReg", "RandomForest", "XGBoost", "LightGBM"]
 
 
+RAW_COLS = ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]   # 자유 텍스트(Name, Ticket, Cabin) 제외 원본
+
+
+def to_raw(df):
+    """Base-Raw 입력: 원본 7개 컬럼을 결측·문자열 그대로 둔다 (문자열은 pandas category 타입 표시만)."""
+    d = df[RAW_COLS].copy()
+    for c in ["Sex", "Embarked"]:
+        d[c] = d[c].astype("category")
+    return d
+
+
+def get_native_model(name):
+    """Base-Raw용: 전처리 없이 원본(결측·범주형 포함)을 그대로 학습. XGBoost/LightGBM만 자체 처리 가능."""
+    m = get_model(name)
+    if name == "XGBoost":
+        m.set_params(enable_categorical=True, tree_method="hist")
+    return m
+
+
 def build_base_pipeline(model_name):
     """Base: 전처리 없음. 결측이 없는 원본 수치형 4개 컬럼만 그대로 사용 (인코딩·스케일링·파생변수 없음)."""
     pre = ColumnTransformer([("num", "passthrough", BASE_NUM_COLS)])
@@ -101,7 +122,7 @@ def build_pipeline(model_name, impute="mean", encode="onehot", scale="standard",
     """
     impute : 'mean' | 'median' | 'most_frequent'  (수치형 대체 전략. 범주형은 항상 최빈값)
              'none' 은 Drop NA 실험용 (사전에 결측 행을 제거했을 때)
-    encode : 'onehot' | 'label'
+    encode : 'onehot' | 'label' | 'target'
     scale  : 'standard' | 'minmax' | 'robust' | None
     fs_k   : None 이면 변수 선택 없음, 정수면 RandomForest 중요도 상위 k개만 사용
     use_fe : 파생 변수(FamilySize, IsAlone, FarePerPerson, HasCabin, Title, AgeGroup) 사용 여부

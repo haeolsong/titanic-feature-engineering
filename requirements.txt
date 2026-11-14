@@ -6,5 +6,5 @@ scikit-learn==1.9.1
 xgboost==3.4.1
 lightgbm==4.7.0
 shap==0.54.1
-flaml[automl]==2.8.0
+flaml==2.8.0
 jupyter

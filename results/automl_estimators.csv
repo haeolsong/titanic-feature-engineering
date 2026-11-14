@@ -1,11 +1,11 @@
 run,estimator,best_cv_f1
 AutoML-Raw,lgbm,0.7741
-AutoML-Raw,xgboost,0.7647
+AutoML-Raw,xgboost,0.7661
 AutoML-Raw,rf,0.7444
 AutoML-Raw,extra_tree,0.7261
 AutoML-Raw,lrl1,0.4608
 AutoML-FE,lgbm,0.7875
-AutoML-FE,xgboost,0.7832
+AutoML-FE,xgboost,0.7761
 AutoML-FE,rf,0.7827
-AutoML-FE,extra_tree,0.7339
+AutoML-FE,extra_tree,0.7596
 AutoML-FE,lrl1,0.4521
